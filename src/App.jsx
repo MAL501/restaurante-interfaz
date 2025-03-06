@@ -28,7 +28,7 @@ function App() {
           <nav>
             <Link to="/">Login</Link> | 
             <Link to="/register">Registro</Link> | 
-            <button onClick={logout()}>Logout</button> | 
+            <Link >Logout</Link> | 
             <Link to="/table">Reservas</Link>
           </nav>
         </header>

@@ -1,3 +1,4 @@
+import NewReserva from "./NewReserva";
 
 export default function ProjectTable({ reservas}) {
   return (
@@ -24,6 +25,7 @@ export default function ProjectTable({ reservas}) {
           ))}
         </tbody>
       </table>
+      <NewReserva></NewReserva>
     </div>
   );
 }

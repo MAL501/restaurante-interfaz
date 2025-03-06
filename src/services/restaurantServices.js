@@ -80,6 +80,27 @@ export const obtenerReservas = async () => {
     return []; // Devuelve un array vacío en caso de error
   }
 };
+export const obtenerDisponibilidad = async () => {
+
+  try {
+      const response = await fetch("http://localhost:8080/disponibilidad", {
+          method: "GET",
+          headers: {
+              "Authorization": `Bearer ${token}`,
+              "Content-Type": "application/json"
+          }
+      });
+
+      if (!response.ok) {
+          throw new Error("Error al obtener disponibilidad");
+      }
+
+      return await response.json();
+  } catch (error) {
+      console.error("Error en obtenerDisponibilidad:", error);
+      throw error;
+  }
+};
 
 export const obtenerReserva = async (id) => {
   try {
