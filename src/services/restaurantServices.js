@@ -102,14 +102,19 @@ export const obtenerDisponibilidad = async () => {
   }
 };
 
-export const obtenerReserva = async (id) => {
+export const crearReserva = async (reserva) => {
+  console.log(reserva);
   try {
-    const response = await fetch((API_URL+"/"+id));
-    if (!response.ok) throw new Error("Error al obtener reservas");
-    return await response.json();
+    await fetch(API_URL, {
+      method: "POST",
+      headers: {
+              "Authorization": `Bearer ${token}`,
+              "Content-Type": "application/json"
+          },
+      body: JSON.stringify(reserva),
+    });
   } catch (error) {
     console.error("Error:", error);
-    return [];
   }
 };
 
@@ -122,28 +127,4 @@ export const borrarReserva = async (id) => {
   }
 };
 
-export const crearReserva = async (reserva) => {
-  try {
-    await fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(reserva),
-    });
-  } catch (error) {
-    console.error("Error:", error);
-  }
-};
 
-export const editarReserva = async (reserva) => {
-  console.log(reserva)
-
-  try {
-    await fetch((API_URL +"/"+reserva.id), {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(reserva),
-    });
-  } catch (error) {
-    console.error("Error:", error);
-  }
-};

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { obtenerDisponibilidad } from "../services/restaurantServices";
-import { crearReserva } from "../services/restaurantServices"; 
+import { obtenerDisponibilidad, crearReserva } from "../services/restaurantServices"; 
 
 const NewReserva = () => {
     const [disponibilidad, setDisponibilidad] = useState([]);
@@ -9,16 +8,15 @@ const NewReserva = () => {
     const [horarioSeleccionado, setHorarioSeleccionado] = useState("");
     const [mesasDisponibles, setMesasDisponibles] = useState([]);
     const [mesaSeleccionada, setMesaSeleccionada] = useState("");
+    const [personas, setPersonas] = useState(1);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
     const [reservaConfirmada, setReservaConfirmada] = useState(false);
 
-    // Cargar disponibilidad al montar el componente
     useEffect(() => {
         const cargarDisponibilidad = async () => {
             try {
                 const data = await obtenerDisponibilidad();
-                console.log(data);
                 setDisponibilidad(data);
             } catch (err) {
                 setError("No se pudo obtener la disponibilidad. Intenta más tarde.");
@@ -29,35 +27,30 @@ const NewReserva = () => {
         cargarDisponibilidad();
     }, []);
 
-    // Manejar selección de fecha
     const handleFechaChange = (e) => {
-        const fecha = e.target.value;
-        setFechaSeleccionada(fecha);
+        setFechaSeleccionada(e.target.value);
         setHorarioSeleccionado("");
         setMesaSeleccionada("");
-
-        // Buscar horarios disponibles para la fecha seleccionada
-        const diaSeleccionado = disponibilidad.find(d => d.fecha === fecha);
+        const diaSeleccionado = disponibilidad.find(d => d.fecha === e.target.value);
         setHorariosDisponibles(diaSeleccionado ? diaSeleccionado.horarios : []);
     };
 
-    // Manejar selección de horario
     const handleHorarioChange = (e) => {
-        const hora = e.target.value;
-        setHorarioSeleccionado(hora);
+        setHorarioSeleccionado(e.target.value);
         setMesaSeleccionada("");
-
-        // Buscar mesas disponibles para el horario seleccionado
-        const horario = horariosDisponibles.find(h => h.hora === hora);
+        const horario = horariosDisponibles.find(h => h.hora === e.target.value);
         setMesasDisponibles(horario ? horario.mesasDisponibles : []);
     };
 
-    // Manejar selección de mesa
     const handleMesaChange = (e) => {
         setMesaSeleccionada(e.target.value);
     };
 
-    // Enviar reserva
+    const handlePersonasChange = (e) => {
+        const numPersonas = parseInt(e.target.value, 10);
+        setPersonas(numPersonas > 0 ? numPersonas : 1);
+    };
+
     const handleReservar = async () => {
         if (!fechaSeleccionada || !horarioSeleccionado || !mesaSeleccionada) {
             setError("Por favor, selecciona todos los datos.");
@@ -67,7 +60,8 @@ const NewReserva = () => {
         const reserva = {
             bookingDate: fechaSeleccionada,
             bookingTime: horarioSeleccionado,
-            mesaId: mesaSeleccionada
+            mesaId: mesaSeleccionada,
+            people: personas
         };
 
         try {
@@ -87,7 +81,6 @@ const NewReserva = () => {
             {error && <p style={{ color: "red" }}>{error}</p>}
             {reservaConfirmada && <p style={{ color: "green" }}>Reserva confirmada ✅</p>}
 
-            {/* Selección de fecha */}
             <div>
                 <label>Fecha:</label>
                 <select value={fechaSeleccionada} onChange={handleFechaChange}>
@@ -98,7 +91,6 @@ const NewReserva = () => {
                 </select>
             </div>
 
-            {/* Selección de horario (solo si ya se eligió una fecha) */}
             {fechaSeleccionada && (
                 <div>
                     <label>Hora:</label>
@@ -111,7 +103,6 @@ const NewReserva = () => {
                 </div>
             )}
 
-            {/* Selección de mesa (solo si ya se eligió un horario) */}
             {horarioSeleccionado && (
                 <div>
                     <label>Mesa:</label>
@@ -124,7 +115,13 @@ const NewReserva = () => {
                 </div>
             )}
 
-            {/* Botón de reserva */}
+            {mesaSeleccionada && (
+                <div>
+                    <label>Número de personas:</label>
+                    <input type="number" min="1" value={personas} onChange={handlePersonasChange} />
+                </div>
+            )}
+
             {mesaSeleccionada && (
                 <div>
                     <button onClick={handleReservar}>Reservar</button>
