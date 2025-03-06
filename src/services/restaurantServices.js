@@ -103,7 +103,7 @@ export const obtenerDisponibilidad = async () => {
 };
 
 export const crearReserva = async (reserva) => {
-  console.log(reserva);
+  console.log(reserva.mesaId);
   try {
     await fetch(API_URL, {
       method: "POST",
