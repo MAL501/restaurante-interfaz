@@ -4,23 +4,32 @@ import './App.css';
 import TablaReservas from "./components/TablaReservas";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import DelReserva from './components/DelReserva';
 import { obtenerReservas } from "./services/restaurantServices";
 
 function App() {
   const [reservas, setReservas] = useState([]);
-
+  const [actualizar, setActualizar] = useState(false)
   useEffect(() => {
     async function fetchData() {
       const data = await obtenerReservas();
+      setActualizar(false);
       console.log(data);
       setReservas(data);
     }
     fetchData();
-  }, []);
+  }, [actualizar]);
 
   const logout = () =>{
-    localStorage.setItem("token","")
+    localStorage.setItem("token","");
+    setActualizar(true);
   }
+  /**
+   * ActualizarTabla se llamará en todas las funciones que actualicen la tabla
+   * y con el useEffect permitirá que se actualice la variable reservas, recargando
+   * los componentes dónde se use
+   */
+  const actualizarTabla = () => {setActualizar(true)}
   return (
     <BrowserRouter>
       <div className="App flex flex-col items-center p-6 bg-gray-100 min-h-screen">
@@ -28,7 +37,7 @@ function App() {
           <nav>
             <Link to="/">Login</Link> | 
             <Link to="/register">Registro</Link> | 
-            <Link >Logout</Link> | 
+            <Link to="/" onClick={logout}>Logout</Link> | 
             <Link to="/table">Reservas</Link>
           </nav>
         </header>
@@ -37,6 +46,7 @@ function App() {
           {/* Este Routes es una especie de "Switch" el cuál nos manda a todas las rutas que necesitemos */}
           <Route path="/register" element={<Register />} />
           <Route path="/table" element={<TablaReservas reservas={reservas} />} />
+          <Route path="/eliminar/:id" element={<DelReserva />} />
           <Route path="/" element={<Login />} />
         </Routes>
       </div>

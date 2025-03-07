@@ -118,12 +118,23 @@ export const crearReserva = async (reserva) => {
   }
 };
 
-export const borrarReserva = async (id) => {
+export const borrarReserva = async (id, token) => {
   try {
-    const response = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
-    if (!response.ok) throw new Error("Error al borrar reserva");
+    const response = await fetch(`${API_URL}/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id }), // Si la API requiere un body en DELETE
+    });
+
+    if (!response.ok) {
+      throw new Error("Error al borrar reserva");
+    }
   } catch (error) {
     console.error("Error:", error);
+    throw error; // Relanzamos el error para que `handleDelete` lo capture
   }
 };
 
