@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { obtenerDisponibilidad, crearReserva } from "../services/restaurantServices"; 
 
-const NewReserva = () => {
+const NewReserva = ({token, setToken}) => {
     const [disponibilidad, setDisponibilidad] = useState([]);
     const [fechaSeleccionada, setFechaSeleccionada] = useState("");
     const [horariosDisponibles, setHorariosDisponibles] = useState([]);
@@ -66,6 +66,7 @@ const NewReserva = () => {
 
         try {
             await crearReserva(reserva);
+            setToken(true);
             setReservaConfirmada(true);
             setError(null);
         } catch (err) {

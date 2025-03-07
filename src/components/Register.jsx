@@ -8,7 +8,7 @@ export default function Register() {
     const [passwd2, setPasswd2] = useState('');
 
     const handleRegister = () => {
-        register(user, email, passwd,passwd2); // Ejecuta la función login cuando se haga clic
+        register(user, email, passwd,passwd2); 
     };
 
     return (

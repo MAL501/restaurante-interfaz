@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from "react-router-dom";  
 import { login } from '../services/restaurantServices';
 
-export default function Login() {
+export default function Login({setToken}) {
     const [user, setUser] = useState('');
     const [passwd, setPasswd] = useState('');
     const navigate = useNavigate();  
@@ -10,7 +10,8 @@ export default function Login() {
     const handleLogin = async () => {
         const success = await login(user, passwd);  
         if (success) {
-            navigate('/table');  
+            navigate('/table'); 
+            setToken(success); 
         } else {
             alert("Usuario o contraseña incorrectos");  
         }

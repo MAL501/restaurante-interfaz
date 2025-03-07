@@ -2,9 +2,7 @@ const API_URL = "http://localhost:8080/reservas";
 const token = localStorage.getItem("token");
 
 
-/**
- * Todo esto es lo primero que tenemos que exportar
- */
+
 export const login = async (username, password) => {
   try {
       const response = await fetch("http://localhost:8080/auth/login", {
@@ -77,7 +75,7 @@ export const obtenerReservas = async () => {
     return await response.json();
   } catch (error) {
     console.error("Error obteniendo reservas:", error);
-    return []; // Devuelve un array vacío en caso de error
+    return []; 
   }
 };
 export const obtenerDisponibilidad = async () => {
@@ -126,7 +124,7 @@ export const borrarReserva = async (id) => {
         "Authorization": `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ id }), // Si la API requiere un body en DELETE
+      body: JSON.stringify({ id }), 
     });
 
     if (!response.ok) {
@@ -134,7 +132,7 @@ export const borrarReserva = async (id) => {
     }
   } catch (error) {
     console.error("Error:", error);
-    throw error; // Relanzamos el error para que `handleDelete` lo capture
+    throw error; 
   }
 };
 

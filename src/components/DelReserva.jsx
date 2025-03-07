@@ -8,15 +8,15 @@ export default function DelReserva({setReservas, reservas}) {
   const navigate = useNavigate();
   const reserva = location.state?.reserva;
 
-  const handleDelete =async () =>{
-    try{
+  const handleDelete = async () => {
+    try {
       await borrarReserva(reserva.id);
-      setReservas(reservas.filter(reserva => reserva.id !== id));
+      setReservas(reservas.filter(r => r.id !== reserva.id));
       setError(null);
-    }catch{
+    } catch (error) {
       setError("No le pertenece la reserva o hubo un error en el servidor");
     }
-  }
+  };
 
   if (!reserva) {
     return <p>No se encontró la reserva.</p>;
@@ -31,7 +31,16 @@ export default function DelReserva({setReservas, reservas}) {
         <li className="px-4 py-3 font-semibold text-green-600"><strong>Fecha:</strong> {reserva.fecha}</li>
         <li className="px-4 py-3"><strong>Número de mesa:</strong> {reserva.numero_mesa}</li>
       </ul>
-      <button onClick={handleDelete} className="bg-red-500 text-white px-4 py-2 rounded mr-2">Eliminar</button>
+      {error && <p className="text-red-500">{error}</p>}
+      <button 
+        onClick={async () => {
+          await handleDelete();  
+          navigate("/table");    
+        }} 
+        className="bg-red-500 text-white px-4 py-2 rounded mr-2"
+      >
+        Eliminar
+      </button>
       <button
         className="bg-gray-300 text-black px-4 py-2 rounded"
         onClick={() => navigate("/table")}

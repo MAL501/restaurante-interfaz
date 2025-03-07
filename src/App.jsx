@@ -9,7 +9,7 @@ import { obtenerReservas } from "./services/restaurantServices";
 
 function App() {
   const [reservas, setReservas] = useState([]);
-  const [token, setToken] = useState(localStorage.getItem(token));
+  const [token, setToken] = useState(localStorage.getItem("token"));
   useEffect(() => {
     async function fetchData() {
       const data = await obtenerReservas();
@@ -17,7 +17,7 @@ function App() {
       setReservas(data);
     }
     fetchData();
-  }, []);
+  }, [token]);
 
   const logout = () =>{
     localStorage.setItem("token","");
@@ -43,9 +43,9 @@ function App() {
         <Routes>  
           {/* Este Routes es una especie de "Switch" el cuál nos manda a todas las rutas que necesitemos */}
           <Route path="/register" element={<Register />} />
-          <Route path="/table" element={<TablaReservas reservas={reservas}/>} />
+          <Route path="/table" element={<TablaReservas reservas={reservas} token={token} setToken={setToken}/>} />
           <Route path="/eliminar/:id" element={<DelReserva reservas={reservas} setReservas={setReservas}/>} />
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<Login setToken={setToken}/>} />
         </Routes>
       </div>
     </BrowserRouter>
