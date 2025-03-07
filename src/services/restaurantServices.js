@@ -118,7 +118,7 @@ export const crearReserva = async (reserva) => {
   }
 };
 
-export const borrarReserva = async (id, token) => {
+export const borrarReserva = async (id) => {
   try {
     const response = await fetch(`${API_URL}/${id}`, {
       method: "DELETE",

@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { borrarReserva } from '../services/restaurantServices';
 import { useState } from "react";
 
-export default function DelReserva() {
+export default function DelReserva({setReservas, reservas}) {
   const [error, setError] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
@@ -11,6 +11,7 @@ export default function DelReserva() {
   const handleDelete =async () =>{
     try{
       await borrarReserva(reserva.id);
+      setReservas(reservas.filter(reserva => reserva.id !== id));
       setError(null);
     }catch{
       setError("No le pertenece la reserva o hubo un error en el servidor");
