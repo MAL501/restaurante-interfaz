@@ -1,7 +1,7 @@
 import NewReserva from "./NewReserva";
 import { useNavigate } from "react-router-dom";
 
-export default function ProjectTable({ reservas, token, setToken }) {
+export default function ProjectTable({ reservas, token, setToken, disponibilidad, setDisponibilidad }) {
   const navigate = useNavigate();
 
 
@@ -37,7 +37,7 @@ export default function ProjectTable({ reservas, token, setToken }) {
           ))}
         </tbody>
       </table>
-      <NewReserva token={token} setToken={setToken} />
+      <NewReserva token={token} setToken={setToken} disponibilidad={disponibilidad} setDisponibilidad={setDisponibilidad}/>
     </div>
   );
 }

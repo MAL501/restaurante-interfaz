@@ -10,6 +10,7 @@ import { obtenerReservas } from "./services/restaurantServices";
 function App() {
   const [reservas, setReservas] = useState([]);
   const [token, setToken] = useState(localStorage.getItem("token"));
+  const [disponibilidad, setDisponibilidad] = useState([]);
   useEffect(() => {
     async function fetchData() {
       const data = await obtenerReservas();
@@ -22,6 +23,7 @@ function App() {
   const logout = () =>{
     localStorage.setItem("token","");
     setReservas([]);
+    setDisponibilidad([]);
   }
   /**
    * ActualizarTabla se llamará en todas las funciones que actualicen la tabla
@@ -43,8 +45,8 @@ function App() {
         <Routes>  
           {/* Este Routes es una especie de "Switch" el cuál nos manda a todas las rutas que necesitemos */}
           <Route path="/register" element={<Register />} />
-          <Route path="/table" element={<TablaReservas reservas={reservas} token={token} setToken={setToken}/>} />
-          <Route path="/eliminar/:id" element={<DelReserva reservas={reservas} setReservas={setReservas}/>} />
+          <Route path="/table" element={<TablaReservas reservas={reservas} token={token} setToken={setToken} disponibilidad={disponibilidad} setDisponibilidad={setDisponibilidad}/>} />
+          <Route path="/eliminar/:id" element={<DelReserva reservas={reservas} setReservas={setReservas} />} />
           <Route path="/" element={<Login setToken={setToken}/>} />
         </Routes>
       </div>

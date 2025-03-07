@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { obtenerDisponibilidad, crearReserva } from "../services/restaurantServices"; 
 
-const NewReserva = ({token, setToken}) => {
-    const [disponibilidad, setDisponibilidad] = useState([]);
+const NewReserva = ({token, setToken, disponibilidad, setDisponibilidad}) => {
     const [fechaSeleccionada, setFechaSeleccionada] = useState("");
     const [horariosDisponibles, setHorariosDisponibles] = useState([]);
     const [horarioSeleccionado, setHorarioSeleccionado] = useState("");
@@ -25,7 +24,7 @@ const NewReserva = ({token, setToken}) => {
             }
         };
         cargarDisponibilidad();
-    }, []);
+    }, [token]);
 
     const handleFechaChange = (e) => {
         setFechaSeleccionada(e.target.value);
